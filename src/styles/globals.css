@@ -129,7 +129,7 @@ h4 { font-size: 1.25rem; }
   }
 
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-body font-500 text-sm transition-all duration-200;
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-body font-medium text-sm transition-all duration-200;
     background: var(--accent);
     color: #fff;
     box-shadow: 0 2px 8px rgba(184,134,11,0.3);
