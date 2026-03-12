@@ -11,7 +11,7 @@ import {
 const FEATURES = [
   { icon: '⚡', label: 'Instant AI Analysis', desc: 'Deep reading of GST & Income Tax notices in seconds' },
   { icon: '📋', label: 'Structured Breakdown', desc: 'Every section, demand, and allegation clearly mapped' },
-  { icon: '📁', label: 'Document Tracker', desc: `Know exactly what's required and track completion` },
+  { icon: '📁', label: 'Document Tracker', desc: 'Know exactly what's required and track completion' },
   { icon: '✍️', label: 'Draft Reply', desc: 'AI-drafted replies with professional disclaimer' },
 ];
 
