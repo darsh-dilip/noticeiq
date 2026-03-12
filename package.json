@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.0",
+    "@google/generative-ai": "^0.21.0",
     "date-fns": "^3.6.0",
     "firebase": "^10.12.0",
     "lucide-react": "^0.383.0",
