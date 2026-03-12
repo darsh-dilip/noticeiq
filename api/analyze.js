@@ -236,11 +236,25 @@ export default async function handler(req, res) {
       },
     };
 
-    const result = await model.generateContent([
-      prompt,
-      filePart,
-      'Analyze the tax notice in this document carefully and return the JSON as instructed.',
-    ]);
+        // Try up to 2 times — waits 65s if rate limited on first attempt
+    let result;
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        result = await model.generateContent([
+          prompt,
+          filePart,
+          'Analyze the tax notice in this document carefully and return the JSON as instructed.',
+        ]);
+        break; // success — exit loop
+      } catch (e) {
+        const isRateLimit = e.message?.includes('429') || e.message?.includes('quota') || e.message?.includes('Resource has been exhausted');
+        if (isRateLimit && attempt === 1) {
+          await new Promise(resolve => setTimeout(resolve, 65000)); // wait 65 seconds
+          continue; // retry
+        }
+        throw e; // any other error, or second failure — throw normally
+      }
+    }
 
     const rawText = result.response.text();
 
