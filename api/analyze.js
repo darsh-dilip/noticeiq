@@ -104,7 +104,54 @@ Return ONLY a valid JSON object — no markdown, no backticks, no explanation.
   ],
   "summary": "3-4 plain English sentences: allegation, period, amount at stake, urgent action needed",
   "shortDescription": "one line for listing e.g. SCN for ITC mismatch u/s 73 for FY 2022-23",
-  "draftReply": "Complete formal reply: (1) To/From/Date/Subject, (2) Acknowledgment with DIN/Ref No, (3) Counter-arguments for each ground with legal citations, (4) Prayer for discharge, (5) Closing with disclaimer: This reply is AI-drafted. Please review with your CA before submission."
+  "draftReply": "A comprehensive formal reply letter (minimum 600-800 words) structured as follows:
+
+[OFFICE ADDRESS BLOCK]
+From: [Full Name of Taxpayer/Assessee]
+[Full Address]
+[GSTIN/PAN]
+
+To:
+The [Designation of Officer]
+[Department/Commissionerate/Ward]
+[Jurisdiction Address]
+
+Date: [Date of Reply]
+
+Subject: Reply to [Notice Type] bearing DIN/Ref No. [Number] dated [Date] for [FY/AY] — Response and Submissions
+
+Honorable Sir/Madam,
+
+With reference to the above-captioned notice dated [date], received by the undersigned on [date], I/We submit this detailed reply for your kind consideration.
+
+1. ACKNOWLEDGMENT & BACKGROUND
+[2-3 sentences acknowledging the notice, confirming the period covered, and stating that the assessee/taxpayer is fully cooperative and committed to compliance]
+
+2. REPLY TO ALLEGATIONS / GROUNDS
+[For EACH ground raised in the notice, write a separate numbered sub-section (2.1, 2.2, etc.) with: (a) the specific allegation restated, (b) detailed factual counter-argument, (c) specific legal provisions and case law supporting the taxpayer, (d) what documents are being submitted in support. Each sub-section should be 3-5 sentences minimum]
+
+3. LEGAL SUBMISSIONS
+[3-4 paragraphs citing relevant provisions of the CGST Act/Income Tax Act, landmark court decisions, CBIC circulars, or CBDT notifications that support the taxpayer position. Mention principles of natural justice where applicable]
+
+4. DOCUMENTS ENCLOSED
+[Numbered list of all supporting documents being enclosed with this reply]
+
+5. PRAYER
+In view of the above submissions and documents enclosed herewith, it is most respectfully prayed that your honor may be pleased to: (a) consider the submissions made herein, (b) drop the proceedings initiated vide the above notice, (c) hold that no demand is payable, and (d) pass any other order that this honorable authority may deem fit in the interest of justice.
+
+The undersigned undertakes to cooperate fully in any further inquiry and to provide any additional documents or information that may be required.
+
+Thanking you.
+
+Yours faithfully,
+[Name]
+[Designation]
+[GSTIN/PAN]
+[Contact Details]
+[Date]
+
+---
+IMPORTANT DISCLAIMER: This reply is AI-generated for informational and reference purposes only. It does not constitute legal, tax, or professional advice. Factual details, legal citations, and arguments must be reviewed, verified, and finalized by a qualified Chartered Accountant or Tax Advocate before submission to any government authority. Submitting this reply without professional review may have legal consequences."
 }
 
 If any field is not found in the notice, use null. Capture every section, demand, and document.`;

@@ -306,13 +306,13 @@ export default function Dashboard() {
           <p className="text-sm" style={{ color: 'var(--text-secondary)', lineHeight: 1.6 }}>
             BizExpress has a network of qualified CAs ready to help. Let us take the complexity off your hands.{' '}
             <a
-              href={import.meta.env.VITE_BIZEXPRESS_CONTACT || '#'}
+              href="http://wa.me/917204027810?text=Hi"
               target="_blank"
               rel="noopener noreferrer"
               className="font-semibold inline-flex items-center gap-1"
               style={{ color: 'var(--accent)' }}
             >
-              Contact BizExpress <ChevronRight size={13} />
+              WhatsApp BizExpress <ChevronRight size={13} />
             </a>
           </p>
         </div>
@@ -402,8 +402,8 @@ function SessionRow({ session, index, onGoTo, onDelete, isDeleting }) {
         <div className="flex items-center justify-end gap-1" onClick={e => e.stopPropagation()}>
           <button
             onClick={e => { e.stopPropagation(); if (session.status !== 'processing') onGoTo(); }}
-            className="btn-ghost text-xs px-2.5 py-1.5 flex items-center gap-1"
-            style={{ color: 'var(--accent)', fontSize: '0.75rem' }}
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all duration-150 whitespace-nowrap"
+            style={{ background: "var(--accent-bg)", color: "var(--accent)", border: "1px solid var(--accent-border)" }}
           >
             Go To <ArrowRight size={12} />
           </button>
