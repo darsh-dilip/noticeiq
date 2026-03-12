@@ -1,9 +1,8 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { db, storage } from '../firebase';
+import { db } from '../firebase';
 import { collection, addDoc, updateDoc, doc, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import {
   Upload, FileText, Receipt, TrendingUp, ArrowLeft,
   CheckCircle2, Loader2, AlertCircle, X, File,
@@ -27,12 +26,14 @@ const ACT_OPTIONS = [
   },
 ];
 
+// No upload step — file is read locally, sent to API, then discarded.
+// Only the structured analysis JSON is saved in Firestore (free tier friendly).
 const ANALYSIS_STEPS = [
-  { icon: <Upload size={16} />,      label: 'Uploading document',           duration: 1000 },
-  { icon: <Brain size={16} />,        label: 'Reading notice content',       duration: 3000 },
-  { icon: <Sparkles size={16} />,     label: 'Identifying sections & demands', duration: 4000 },
-  { icon: <ClipboardList size={16} />, label: 'Structuring analysis report',  duration: 2000 },
-  { icon: <Tag size={16} />,          label: 'Finalizing session',           duration: 1000 },
+  { icon: <FileText size={16} />,      label: 'Reading document',              duration: 1000 },
+  { icon: <Brain size={16} />,         label: 'Extracting notice content',     duration: 3000 },
+  { icon: <Sparkles size={16} />,      label: 'Identifying sections & demands', duration: 4000 },
+  { icon: <ClipboardList size={16} />, label: 'Structuring analysis report',   duration: 2000 },
+  { icon: <Tag size={16} />,           label: 'Saving session',                duration: 1000 },
 ];
 
 export default function NewSessionPage() {
@@ -92,69 +93,66 @@ export default function NewSessionPage() {
     let sessionId;
 
     try {
-      // Step 0: Upload to Firebase Storage
+      // Step 0: Read file locally into base64 (no upload to any server yet)
       setCurrentStep(0);
-      const storagePath = `notices/${user.uid}/${Date.now()}_${file.name}`;
-      const storageRef  = ref(storage, storagePath);
-      await uploadBytes(storageRef, file);
-      const fileUrl = await getDownloadURL(storageRef);
+      const base64Data = await toBase64(file);
 
-      // Create session doc with 'processing' status
+      // Step 1: Create a session record in Firestore with 'processing' status.
+      // We only store lightweight metadata — NOT the file itself — so the free
+      // Firestore tier is never stressed by large binary data.
+      setCurrentStep(1);
       const sessionRef = await addDoc(collection(db, 'sessions'), {
         userId:    user.uid,
         name:      sessionName.trim(),
         actType,
         status:    'processing',
         createdAt: serverTimestamp(),
-        noticeFile: { url: fileUrl, name: file.name, type: file.type, size: file.size },
+        // Store only filename/size for display — the actual bytes are never saved
+        noticeFile: { name: file.name, type: file.type, size: file.size },
         analysis:  null,
       });
       sessionId = sessionRef.id;
 
-      // Step 1-2: Encode and send to API
-      setCurrentStep(1);
-      const base64Data = await toBase64(file);
-
+      // Step 2: Send base64 file + metadata to the Vercel API route.
+      // Claude reads the document, extracts all structured data and returns JSON.
       setCurrentStep(2);
       const response = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          fileData:  base64Data,
-          fileType:  file.type,
+          fileData:    base64Data,
+          fileType:    file.type,
           actType,
           sessionName: sessionName.trim(),
         }),
       });
 
+      // Step 3: Parse the AI response
       setCurrentStep(3);
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
         throw new Error(err.error || `Analysis failed (${response.status})`);
       }
-
       const analysis = await response.json();
 
-      // Step 4: Save analysis to Firestore
+      // Step 4: Save the structured analysis JSON to Firestore.
+      // This is pure text/numbers — tiny compared to a PDF — well within free limits.
       setCurrentStep(4);
       await updateDoc(doc(db, 'sessions', sessionId), {
-        status: 'complete',
+        status:         'complete',
         analysis,
-        updatedAt: serverTimestamp(),
+        updatedAt:      serverTimestamp(),
         documentStatus: {},
       });
 
-      // Navigate to session
       navigate(`/session/${sessionId}`, { replace: true });
 
     } catch (err) {
       console.error(err);
       setError(err.message || 'Analysis failed. Please try again.');
-
-      // Mark session as error if it was created
       if (sessionId) {
         await updateDoc(doc(db, 'sessions', sessionId), {
-          status: 'error',
+          status:       'error',
           errorMessage: err.message,
         }).catch(() => {});
       }
@@ -335,7 +333,7 @@ export default function NewSessionPage() {
         </button>
 
         <p className="text-xs text-center" style={{ color: 'var(--text-muted)', lineHeight: 1.6 }}>
-          Your document is securely encrypted and stored. Analysis typically takes 30–90 seconds.
+          Your document is read locally and sent securely for analysis. Only the structured results are saved — the original file is never stored. Analysis typically takes 30–90 seconds.
         </p>
       </form>
     </div>

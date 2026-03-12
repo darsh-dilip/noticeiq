@@ -1,13 +1,13 @@
+// Firebase Storage is NOT used in this application.
+// We run on Firebase free (Spark) plan.
+// Notice files are processed locally and never stored — only
+// structured JSON analysis is saved in Firestore.
+
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    // Users can only upload to and read from their own folder
-    match /notices/{userId}/{allPaths=**} {
-      allow read, write: if request.auth != null
-        && request.auth.uid == userId
-        && request.resource.size < 20 * 1024 * 1024
-        && (request.resource.contentType.matches('application/pdf')
-            || request.resource.contentType.matches('image/.*'));
+    match /{allPaths=**} {
+      allow read, write: if false;
     }
   }
 }

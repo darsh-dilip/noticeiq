@@ -149,18 +149,8 @@ export default function SessionPage() {
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          {session.noticeFile?.url && (
-            <a
-              href={session.noticeFile.url}
-              target="_blank"
-              rel="noopener"
-              className="btn-secondary text-xs"
-            >
-              <FileText size={13} /> Original
-            </a>
-          )}
           <button onClick={() => window.print()} className="btn-secondary text-xs no-print">
-            <Printer size={13} /> Print
+            <Printer size={13} /> Print Report
           </button>
         </div>
       </div>
