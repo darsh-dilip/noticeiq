@@ -4,7 +4,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // We use gemini-1.5-flash — completely free tier, reads PDFs and images,
 // 1,500 requests/day, 15 requests/minute. No billing required.
-const MODEL = 'gemini-1.5-flash';
+const MODEL = 'gemini-2.0-flash';
 
 // ============================================================
 // GST Notice Analysis Prompt
