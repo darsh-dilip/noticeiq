@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   CSS Custom Properties — Light & Dark Themes
+   ============================================================ */
+:root {
+  /* Light Mode Palette */
+  --bg-base:       #FDFCF8;
+  --bg-card:       #FFFFFF;
+  --bg-elevated:   #F7F4EC;
+  --bg-subtle:     #EDE8D8;
+
+  --text-primary:  #1A1A2E;
+  --text-secondary:#4A4A6A;
+  --text-muted:    #7A7A9A;
+
+  --accent:        #B8860B;
+  --accent-soft:   #D4A853;
+  --accent-bg:     #FFF9E6;
+  --accent-border: #FFE07A;
+
+  --border:        #E2D9C5;
+  --border-strong: #C8BFAB;
+
+  --success:       #166534;
+  --success-bg:    #DCFCE7;
+  --warning:       #92400E;
+  --warning-bg:    #FEF3C7;
+  --danger:        #9B2335;
+  --danger-bg:     #FEE2E2;
+  --info:          #1E40AF;
+  --info-bg:       #DBEAFE;
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg:     0 10px 40px rgba(0,0,0,0.12);
+}
+
+.dark {
+  /* Dark Mode Palette */
+  --bg-base:       #0D0F18;
+  --bg-card:       #151928;
+  --bg-elevated:   #1D2235;
+  --bg-subtle:     #242840;
+
+  --text-primary:  #E8E4D8;
+  --text-secondary:#9B97B8;
+  --text-muted:    #5C5A7A;
+
+  --accent:        #D4A853;
+  --accent-soft:   #E8C170;
+  --accent-bg:     rgba(212,168,83,0.08);
+  --accent-border: rgba(212,168,83,0.25);
+
+  --border:        #252A3C;
+  --border-strong: #353A52;
+
+  --success:       #34D399;
+  --success-bg:    rgba(52,211,153,0.08);
+  --warning:       #FBB040;
+  --warning-bg:    rgba(251,176,64,0.08);
+  --danger:        #F87171;
+  --danger-bg:     rgba(248,113,113,0.08);
+  --info:          #60A5FA;
+  --info-bg:       rgba(96,165,250,0.08);
+
+  --shadow-sm:     0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md:     0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg:     0 10px 40px rgba(0,0,0,0.6);
+}
+
+/* ============================================================
+   Base Reset & Defaults
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   Typography
+   ============================================================ */
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  font-weight: 600;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.875rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+/* ============================================================
+   Utility Component Classes
+   ============================================================ */
+@layer components {
+  .card {
+    @apply rounded-xl border;
+    background: var(--bg-card);
+    border-color: var(--border);
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .card-hover {
+    @apply card;
+  }
+  .card-hover:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--border-strong);
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-body font-500 text-sm transition-all duration-200;
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(184,134,11,0.3);
+  }
+  .btn-primary:hover {
+    opacity: 0.92;
+    box-shadow: 0 4px 16px rgba(184,134,11,0.4);
+    transform: translateY(-1px);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-body text-sm font-medium transition-all duration-200;
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .btn-secondary:hover {
+    background: var(--bg-subtle);
+    border-color: var(--border-strong);
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-4 py-2 rounded-lg font-body text-sm transition-all duration-200;
+    color: var(--text-secondary);
+  }
+  .btn-ghost:hover {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-lg text-sm font-body transition-all duration-200 outline-none;
+    background: var(--bg-elevated);
+    border: 1.5px solid var(--border);
+    color: var(--text-primary);
+  }
+  .input-field::placeholder { color: var(--text-muted); }
+  .input-field:focus {
+    border-color: var(--accent);
+    background: var(--bg-card);
+    box-shadow: 0 0 0 3px var(--accent-bg);
+  }
+
+  .label {
+    @apply block text-xs font-medium mb-1.5 uppercase tracking-wide;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .section-header {
+    @apply flex items-center gap-3 mb-5;
+  }
+  .section-header-icon {
+    @apply w-9 h-9 rounded-lg flex items-center justify-center text-sm;
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  .section-header-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium;
+  }
+  .badge-gold {
+    background: var(--accent-bg);
+    color: var(--accent);
+    border: 1px solid var(--accent-border);
+  }
+  .badge-success {
+    background: var(--success-bg);
+    color: var(--success);
+  }
+  .badge-warning {
+    background: var(--warning-bg);
+    color: var(--warning);
+  }
+  .badge-danger {
+    background: var(--danger-bg);
+    color: var(--danger);
+  }
+  .badge-info {
+    background: var(--info-bg);
+    color: var(--info);
+  }
+
+  .table-base {
+    @apply w-full text-sm;
+    border-collapse: collapse;
+  }
+  .table-base th {
+    @apply px-4 py-3 text-left text-xs uppercase tracking-wide font-medium;
+    background: var(--bg-elevated);
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+  }
+  .table-base td {
+    @apply px-4 py-3.5;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+  .table-base tr:last-child td { border-bottom: none; }
+  .table-base tbody tr:hover { background: var(--bg-elevated); }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.5rem 0;
+  }
+
+  .amount-highlight {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
+
+/* ============================================================
+   Scrollbar Styling
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ============================================================
+   Page Transitions & Loading
+   ============================================================ */
+.page-enter {
+  animation: fadeIn 0.4s ease-out, slideUp 0.4s ease-out;
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--bg-elevated) 25%, var(--bg-subtle) 50%, var(--bg-elevated) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   Upload Zone
+   ============================================================ */
+.upload-zone {
+  border: 2px dashed var(--border);
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+}
+
+/* ============================================================
+   Analysis Progress
+   ============================================================ */
+.progress-bar {
+  height: 3px;
+  border-radius: 2px;
+  background: var(--border);
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ============================================================
+   Print Styles
+   ============================================================ */
+@media print {
+  .no-print { display: none !important; }
+  .card { box-shadow: none !important; border: 1px solid #ccc !important; }
+  body { background: white !important; color: black !important; }
+}
+
+/* ============================================================
+   Mobile Responsive Overrides
+   ============================================================ */
+@media (max-width: 640px) {
+  h1 { font-size: 1.875rem; }
+  h2 { font-size: 1.5rem; }
+  .hide-mobile { display: none !important; }
+}
